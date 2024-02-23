@@ -1,4 +1,5 @@
-//make schema
+//Model MVC
+//all schema written here
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
