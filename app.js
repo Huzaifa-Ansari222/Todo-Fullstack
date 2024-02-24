@@ -12,11 +12,12 @@ config({
 //user Router for clean routing
 const router = express.Router();
 
-//use middleware
-app.use(express.json())//1st
-//using route
-app.use("/api/v1/users" ,userRouter)//2nd //add /user in every  userROuter
-app.use(cookieParser())
+// Use middleware
+app.use(express.json()); //1st Parse JSON bodies of incoming requests
+app.use(cookieParser()); //0th Use cookie-parser middleware first
+app.use("/api/v1/users", userRouter); //2nd Route for users
+
+
 
 app.get('/', (req, res) => {
     res.send("hi working")

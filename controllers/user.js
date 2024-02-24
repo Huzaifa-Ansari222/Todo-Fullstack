@@ -39,6 +39,7 @@ export const login = async (req, res, next) => {
     sendCookie(user,res,`welcome back, ${user.name}`,200)
 }
 
+
 //register func
 export const register = async (req, res, next) => {
 
@@ -64,152 +65,28 @@ export const register = async (req, res, next) => {
 
 }
 
-
-
-// getUserdetail func
-export const getMyProfile = async (req, res) => {
-
-    const id = "myid";
-
-    //we have cookie &login
-    const {token} = req.cookies;
-    console.log(token);
-
-    // const user = await User.findById(id);
+// getMyProfile func
+export const getMyProfile =  (req, res) => {
     res.status(200).json({
-        success:true,
-        user,
+        success: true,
+        user: req.user,
     })
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export const register = async (req, res) => {
-
-//     const {name, email, password} = req.body;
-//     await User.create({
-//         name ,
-//         email ,
-//         password ,
-//     }) //create user
-
-//     res.status(201).cookie("tempi","mssgfrmcok").json({
-//         success: true,
-//         message: "Register successful",
-//     })
-// }
-
-
-
-// export const getUserDetails = async(req,res) => {
-//     // const {id} = req.query;
-//     const {id} = req.params;
-//     const user = await User.findById(id);
-//     // console.log(req.params); //{} empty object without :id
-//     res.json({
-//         success: true,
-//         user,
-//     })
-// }
-
-
-// export const updateUser = async(req,res) => {
-//    // const {id} = req.query;
-//     const {id} = req.params;
-//     const user = await User.findById(id);
-//     res.json({
-//         success: true,
-//         message: "updated",
-//     })
-// }
-
-
-
-// export const deleteUser =  async (req, res) => {
-//     try {
-//         // Call the deleteUser function and pass the request and response objects
-//         const {id} = req.params;
-//         const user = await User.findById(id);
-    
-//         await user.deleteOne()
-//             res.json({
-//         success: true,
-//         message: "delete",
-//     })
-//         } catch (error) {
-//         // Handle any errors that occur during the deletion process
-//         console.error("Error deleting user:", error);
-//         res.status(500).json({
-//             success: false,
-//             message: "Failed to delete user",
-//             error: error.message
-//         });
-//     }
-// };
+//logut func
+export const logout = (req, res) => {
+    //empty cookie to logout
+    res
+        .status(200)
+        .cookie(
+            "token",
+            "",//empty cookie
+            {expire:new Date(Date.now())} //expire 
+        )
+        .json({
+        success: true,
+        user: req.user,
+    })
+}
 
 

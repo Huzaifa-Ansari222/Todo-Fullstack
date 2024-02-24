@@ -2,7 +2,8 @@
 //all user api / route here 
 import  express, { Router }  from "express";
 import { User } from "../models/user.js";
-import { getAllusers,  getMyProfile,  login,  register } from "../controllers/user.js";
+import { getAllusers,  getMyProfile,  login,  logout,  register } from "../controllers/user.js";
+import { isAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router()
 
@@ -15,8 +16,11 @@ router.post('/new',register)
 //login route
 router.post('/login',login)
 
-//single route for view, login,register
-router.get("/me", getMyProfile)
+//logout route
+router.get('/logout',logout)
+
+//login need to see profile
+router.get('/me', isAuthenticated, getMyProfile)
 
 
 
