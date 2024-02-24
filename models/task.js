@@ -18,7 +18,7 @@ const taskSchema = new mongoose.Schema({
     user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    require: true,
+    required: true,
     }
 },{timestamps:true})
 //make model

@@ -1,7 +1,9 @@
 import express from "express";
 import userRouter from "./routes/user.js"
+import taskRouter from "./routes/task.js"
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
+
 
 export const app = express();
 
@@ -16,6 +18,8 @@ const router = express.Router();
 app.use(express.json()); //1st Parse JSON bodies of incoming requests
 app.use(cookieParser()); //0th Use cookie-parser middleware first
 app.use("/api/v1/users", userRouter); //2nd Route for users
+
+app.use("/api/v1/task", taskRouter); 
 
 
 
