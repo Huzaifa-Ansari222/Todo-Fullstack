@@ -38,5 +38,45 @@ export const  getMyTask = async (req, res) => {
             error: error.message
         });
     }
+}
 
+//updare task
+export const  updateTask = async (req, res) => {
+
+    const { id } = req.params;
+    const task = await Task.findById(id);
+
+    if(!task) return res.status(404).json({
+        success:false,
+        message:"Invaild Id or Task not found!"
+    })
+    //true->false | false->true
+    task.isCompleted = !task.isCompleted;
+    await task.save();//task val save
+
+
+    res.status(200).json({
+        success: true,
+        message:"Task Updated!"
+        });
+    
+}
+
+//delete ask
+export const  deleteTask = async (req, res, next) => {
+    
+    const { id } = req.params;
+    const task = await Task.findById(id);
+
+    if(!task) return res.status(404).json({
+        success:false,
+        message:"Invaild Id or Task not found!"
+    })
+    await task.deleteOne();//task val remove
+
+    res.status(200).json({
+        success: true,
+        message:"Task Deleted!"
+        });
+    
 }

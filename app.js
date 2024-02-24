@@ -27,3 +27,8 @@ app.get('/', (req, res) => {
     res.send("hi working")
 })
 
+// app.use((err,req,res,next) => {
+
+// })
+
+// 4:55hr error handling
