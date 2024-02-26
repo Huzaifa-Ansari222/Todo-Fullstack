@@ -1,5 +1,5 @@
 import { Task }  from "../models/task.js"
-
+import express from "express"
 
 //create task
 export const newTask = async(req, res, next) => {
@@ -41,15 +41,12 @@ export const  getMyTask = async (req, res) => {
 }
 
 //updare task
-export const  updateTask = async (req, res) => {
+export const  updateTask = async (req, res, next) => {
 
     const { id } = req.params;
     const task = await Task.findById(id);
 
-    if(!task) return res.status(404).json({
-        success:false,
-        message:"Invaild Id or Task not found!"
-    })
+    if(!task) return next(new Error("nice"))
     //true->false | false->true
     task.isCompleted = !task.isCompleted;
     await task.save();//task val save
@@ -63,15 +60,12 @@ export const  updateTask = async (req, res) => {
 }
 
 //delete ask
-export const  deleteTask = async (req, res, next) => {
+export const  deleteTask = async (err, req, res, next) => {
     
     const { id } = req.params;
     const task = await Task.findById(id);
 
-    if(!task) return res.status(404).json({
-        success:false,
-        message:"Invaild Id or Task not found!"
-    })
+    if(!task) return next(new Error("nice"))
     await task.deleteOne();//task val remove
 
     res.status(200).json({

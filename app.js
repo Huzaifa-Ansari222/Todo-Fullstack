@@ -27,8 +27,12 @@ app.get('/', (req, res) => {
     res.send("hi working")
 })
 
-// app.use((err,req,res,next) => {
-
-// })
+//error handler
+app.use((err, req, res, next) => {
+    return  res.status(404).json({
+        success: false,
+        message:"Invaild Id or Task not found!"
+    });
+})
 
 // 4:55hr error handling
