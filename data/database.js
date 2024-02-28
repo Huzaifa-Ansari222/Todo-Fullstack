@@ -7,6 +7,6 @@ mongoose
     .connect(process.env.MONGO_URI, {
     dbName:"BackendTODOapi",
 })
-.then(() => console.log("database conntecd"))
+.then((c) => console.log(`database connected ${c.connection.host}`))
 .catch((e) => console.log(e));
 };
