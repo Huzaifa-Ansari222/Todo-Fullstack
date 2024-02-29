@@ -23,7 +23,7 @@ app.use(
     cors({
     origin: [process.env.FRONTEND_URI],
     methods: ["GET","POST","PUT","DELETE"],
-    credentails: true,//api work but not cookie /headers for frontend
+    credentials: true,//api work but not cookie /headers for frontend
     })
 ) //pass option and domain{} 
 // if req come from same domain then it respones else not
