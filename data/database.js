@@ -8,5 +8,3 @@ mongoose
     dbName:"BackendTODOapi",
 })
 .then((c) => console.log(`database connected ${c.connection.host}`))
-.catch((e) => console.log(e));
-};
