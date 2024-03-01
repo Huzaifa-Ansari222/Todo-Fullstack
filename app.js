@@ -3,6 +3,7 @@ import userRouter from "./routes/user.js"
 import taskRouter from "./routes/task.js"
 import { config } from "dotenv";
 import cookieParser from "cookie-parser";
+import { errorMiddleware } from "./middlewares/error.js";
 import cors from "cors"
 
 
@@ -33,9 +34,11 @@ app.use("/api/v1/task", taskRouter);
 
 
 app.get('/', (req, res) => {
-    res.send("hi working")
-})
+    res.send("server is working")
+});
 
+//error handler
+app.use(errorMiddleware);
 //error handler
 // app.use((err, req, res, next) => {
 //     return  res.status(404).json({

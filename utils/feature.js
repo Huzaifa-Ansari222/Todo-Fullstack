@@ -14,8 +14,6 @@ export const sendCookie = (user, res, message, statusCode=200) => {
             // secure:true,
             sameSite: process.env.NODE_ENV ==="Development"? "lax" :"none",//because or frontend and backend domain arenot same
             secure: process.env.NODE_ENV ==="Development"? false :true,//for local make it false make NODE_ENV
-
-
         })
         .json({
             success: true,

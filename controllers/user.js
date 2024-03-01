@@ -1,14 +1,15 @@
 //controller MVC
-//all routes funcs written here
+//all routes of users funcs written here
 import { User } from "../models/user.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { sendCookie } from "../utils/feature.js";
 
-export const getAllusers =async (req, res) => {
-    console.log(req.query);
+//view user api data of email and name and date
+export const getAllusers = async (req, res) => {
+    // console.log(req.query);
     const keywordv = req.query.email //get query key value
-    console.log(keywordv)
+    // console.log(keywordv)
     const users = await User.find({}) //find Allusers
     // console.log(users);
     res.json({
@@ -19,6 +20,7 @@ export const getAllusers =async (req, res) => {
 
 //login func
 export const login = async (req, res, next) => {
+try {
     const {email, password} = req.body;
 
     const user = await User.findOne({email}).select("+password")//alldata + password /srch by email
@@ -36,13 +38,16 @@ export const login = async (req, res, next) => {
     message: "Invalid email or password",
     })
     //if match
-    sendCookie(user,res,`welcome back, ${user.name}`,200)
+    sendCookie(user,res,`Welcome back, ${user.name}`,200)
+    } catch (error) {
+    next(error);
+    }
 }
 
 
 //register func
 export const register = async (req, res, next) => {
-
+try {
     const {name, email, password }= req.body;
 
     let user = await User.findOne({
@@ -62,6 +67,9 @@ export const register = async (req, res, next) => {
         password:hashedPassword 
     })
     sendCookie(user, res, "Register Successfully",201);
+    } catch (error) {
+    next(error);
+    }
 
 }
 
@@ -81,8 +89,11 @@ export const logout = (req, res) => {
         .cookie(
             "token",
             "",//empty cookie
-            {expire:new Date(Date.now())} //expire 
-        )
+            {
+                expire:new Date(Date.now()),//expire 
+                sameSite: process.env.NODE_ENV === "Develpoment" ? "lax" : "none",
+                secure: process.env.NODE_ENV === "Develpoment" ? false : true,
+            })
         .json({
         success: true,
         user: req.user,

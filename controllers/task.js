@@ -1,8 +1,10 @@
 import { Task }  from "../models/task.js"
-import express from "express"
+import ErrorHandler from "../middlewares/error.js";
+// import express from "express"
 
 //create task
 export const newTask = async(req, res, next) => {
+try{
     const {title, description} = req.body;
 
     await Task.create({
@@ -14,14 +16,17 @@ export const newTask = async(req, res, next) => {
     res.status(201).json({
         sucess:true,
         message:"Task added Successfully",
-    })
-}
+    });
+} catch (error) {
+    next(error);
+    }
+};
 
 
-//veiw ask
-export const  getMyTask = async (req, res) => {
+//veiw task
+export const  getMyTask = async (req, res,next) => {
     //show user task to same login user
-    try {
+try {
         //show user tasks for the same logged-in user
         const userId = req.user._id; //get _id of the logged-in user
         const tasks = await Task.find({ user: userId }); //find tasks of the user
@@ -30,15 +35,11 @@ export const  getMyTask = async (req, res) => {
             success: true,
             tasks: tasks, //provide tasks array here
         });
-    } catch (error) {
-        console.error("Error retrieving tasks:", error);
-        res.status(500).json({
-            success: false,
-            message: "Failed to retrieve tasks",
-            error: error.message
-        });
+} catch (error) {
+        next(error);
     }
-}
+};
+
 
 // update task
 export const updateTask = async (req, res, next) => {
@@ -46,12 +47,7 @@ export const updateTask = async (req, res, next) => {
         const { id } = req.params;
         const task = await Task.findById(id);
 
-        if (!task) {
-            return res.status(404).json({
-                success: false,
-                message: "Invalid Id or Task not found!"
-            });
-        }
+        if (!task) return next(new ErrorHandler("Task not found", 404));
 
         // Toggle the completion status of the task
         task.isCompleted = !task.isCompleted;
@@ -61,15 +57,11 @@ export const updateTask = async (req, res, next) => {
             success: true,
             message: "Task Updated!"
         });
-    } catch (error) {
-        // Handle any errors that might occur during the execution of the function
-        res.status(500).json({
-            success: false,
-            message: "An error occurred while updating the task.",
-            error: error.message
-        });
+} catch (error) {
+        next(error);
     }
-}
+};
+
 
 // delete task
 export const deleteTask = async (req, res, next) => {
@@ -77,12 +69,7 @@ export const deleteTask = async (req, res, next) => {
         const { id } = req.params;
         const task = await Task.findById(id);
 
-        if (!task) {
-            return res.status(404).json({
-                success: false,
-                message: "Invalid Id or Task not found!"
-            });
-        }
+        if (!task) return next(new ErrorHandler("Task not found", 404));
 
         await task.deleteOne(); // Delete the task
 
@@ -91,58 +78,9 @@ export const deleteTask = async (req, res, next) => {
             message: "Task Deleted!"
         });
     } catch (error) {
-        // Handle any errors that might occur during the execution of the function
-        res.status(500).json({
-            success: false,
-            message: "An error occurred while deleting the task.",
-            error: error.message
-        });
+        next(error);
     }
-}
+};
 
 
-// //updare task
-// export const  updateTask = async (req, res, next) => {
 
-//     const { id } = req.params;
-//     const task = await Task.findById(id);
-
-//     //return next(new Error("nice"))
-//     if(!task) 
-//     return res.status(404).json({
-//         success: false,
-//         message:"Invaild Id or Task not found!"
-//     });
-//     //true->false | false->true
-//     task.isCompleted = !task.isCompleted;
-//     await task.save();//task val save
-
-
-//     res.status(200).json({
-//         success: true,
-//         message:"Task Updated!"
-//         });
-    
-// }
-
-
-// //delete ask
-// export const  deleteTask = async (req, res, next) => {
-    
-//     const { id } = req.params;
-//     const task = await Task.findById(id);
-
-//     if(!task) 
-//         return res.status(404).json({
-//         success: false,
-//         message:"Invaild Id or Task not found!"
-//     });
-//     await task.deleteOne();//task val remove
-
-//     res.status(200).json({
-//         success: true,
-//         message:"Task Deleted!"
-//         });
-    
-// }
-//add taks 
