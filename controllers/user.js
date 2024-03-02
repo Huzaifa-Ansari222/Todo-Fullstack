@@ -90,7 +90,8 @@ export const logout = (req, res) => {
             "token",
             "",//empty cookie
             {
-                expire:new Date(Date.now()),//expire 
+                // expire:new Date(Date.now()),//expire 
+                expires: new Date(0),
                 sameSite: process.env.NODE_ENV === "Develpoment" ? "lax" : "none",
                 secure: process.env.NODE_ENV === "Develpoment" ? false : true,
             })
